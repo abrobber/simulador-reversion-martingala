@@ -25,6 +25,8 @@ usar_yf = st.sidebar.checkbox("📡 Usar gráfico real de Yahoo Finance (EUR/USD
 if usar_yf:
     df = obtener_velas_yf(limit=100)
     st.success("✅ Datos reales cargados desde Yahoo Finance")
+    if df.empty:
+        st.warning("⚠️ Yahoo Finance no devolvió suficientes datos. Probá en horario de mercado o con otro símbolo.")
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
