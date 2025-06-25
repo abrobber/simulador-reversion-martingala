@@ -23,7 +23,7 @@ st.subheader("📄 Cargar secuencia de velas")
 usar_yf = st.sidebar.checkbox("📡 Usar gráfico real de Yahoo Finance (BTC-USD)")
 
 if usar_yf:
-    df = obtener_velas_yf(ticker="BTC-USD", interval="1m", period="1d", limit=100)
+    df = obtener_velas_yf(ticker="BTC-USD", interval="5m", period="1d", limit=100)
     st.success("✅ Datos reales cargados desde Yahoo Finance")
     if df.empty:
         st.warning("⚠️ Yahoo Finance no devolvió suficientes datos. Probá en horario de mercado o con otro símbolo.")
