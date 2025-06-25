@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from estrategia import simular_sesion
-from utils import calcular_rsi
+from utils import calcular_rsi, obtener_velas_binance
 
 st.set_page_config(page_title="Simulador Reversión Martingala", layout="wide")
 st.title("🔁 Simulador de Reversión con Martingala")
@@ -19,10 +19,19 @@ filtro_rsi = st.sidebar.checkbox("Usar filtro RSI 40–60", value=False)
 st.subheader("📄 Cargar secuencia de velas")
 archivo = st.file_uploader("Sube un .csv con columna 'color' (roja/verde)", type="csv")
 
-if archivo:
-    df = pd.read_csv(archivo)
+
+# Checkbox para usar gráfico real
+usar_binance = st.sidebar.checkbox("📡 Usar gráfico real de Binance (EUR/USDT)")
+
+if usar_binance:
+    df = obtener_velas_binance(symbol="EURUSDT", interval="1m", limit=100)
+    st.success("✅ Datos reales cargados desde Binance")
 else:
-    df = pd.read_csv("data/velas_demo.csv")
+    archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
+    if archivo:
+        df = pd.read_csv(archivo)
+    else:
+        df = pd.read_csv("data/velas_demo.csv")
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
