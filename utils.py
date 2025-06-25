@@ -20,7 +20,7 @@ def calcular_rsi(colores, periodo=6):
     return rsi
 
 
-def obtener_velas_yf(ticker="EUR/USD", interval="1m", period="1d", limit=100):
+def obtener_velas_yf(ticker="BTC-USD", interval="1m", period="1d", limit=100):
     df = yf.download(ticker, interval=interval, period=period, progress=False)
 
     # Verifica si tiene datos y columnas necesarias
