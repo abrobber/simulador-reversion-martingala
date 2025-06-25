@@ -21,12 +21,14 @@ def calcular_rsi(colores, periodo=6):
 
 def obtener_velas_yf(ticker="EURUSD=X", interval="1m", period="1d", limit=100):
     df = yf.download(ticker, interval=interval, period=period, progress=False)
-    df = df.dropna(subset=["Open", "Close"]).tail(limit).copy()
 
+    # Validar si existen las columnas necesarias
     if df.empty or "Open" not in df.columns or "Close" not in df.columns:
-        return pd.DataFrame(columns=["Open", "Close", "color"])
+        return pd.DataFrame(columns=["Open", "Close", "color"])  # Retorna vacío sin error
 
+    df = df.dropna(subset=["Open", "Close"]).tail(limit).copy()
     df["color"] = df.apply(lambda row: "verde" if row["Close"] > row["Open"] else "roja", axis=1)
     return df[["Open", "Close", "color"]].reset_index(drop=True)
+
 
 
