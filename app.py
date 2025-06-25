@@ -17,8 +17,6 @@ filtro_rsi = st.sidebar.checkbox("Usar filtro RSI 40–60", value=False)
 
 # Carga de velas
 st.subheader("📄 Cargar secuencia de velas")
-archivo = st.file_uploader("Sube un .csv con columna 'color' (roja/verde)", type="csv")
-
 
 # Checkbox para usar gráfico real
 usar_binance = st.sidebar.checkbox("📡 Usar gráfico real de Binance (EUR/USDT)")
