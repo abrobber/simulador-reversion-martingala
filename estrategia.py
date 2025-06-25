@@ -1,0 +1,46 @@
+def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct, usar_rsi):
+    saldo = 100
+    historial = []
+    entradas = 0
+    aciertos = 0
+    ciclos_totales = []
+    saldo_max = saldo
+    saldo_min = saldo
+
+    for i in range(2, len(df)):
+        if df['color'][i-2] == df['color'][i-1] and df['color'][i] != df['color'][i-1]:
+            if usar_rsi and not (40 <= df['RSI'][i] <= 60):
+                continue
+
+            entradas += 1
+            ciclo = 0
+            apuesta = saldo * stake_pct
+            real = df['color'][i]
+            prediccion = 'verde' if df['color'][i-1] == 'roja' else 'roja'
+            acierto = prediccion == real
+
+            while not acierto and ciclo < ciclos_max - 1:
+                saldo -= apuesta
+                apuesta *= martingala
+                ciclo += 1
+                acierto = prediccion == real
+
+            ganancia = apuesta * payout if acierto else -apuesta
+            saldo += ganancia
+            aciertos += 1 if acierto else 0
+            ciclos_totales.append(ciclo + 1)
+            saldo_max = max(saldo_max, saldo)
+            saldo_min = min(saldo_min, saldo)
+            historial.append(saldo)
+
+            if saldo >= 100 * (1 + tp_pct) or saldo <= 100 * (1 - sl_pct):
+                break
+
+    return {
+        'entradas': entradas,
+        'aciertos': aciertos,
+        'prom_ciclos': sum(ciclos_totales)/len(ciclos_totales) if ciclos_totales else 0,
+        'saldo_final': saldo,
+        'drawdown_max': (saldo_max - saldo_min)/saldo_max * 100,
+        'historial': historial
+    }
