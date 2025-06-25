@@ -24,6 +24,7 @@ usar_binance = st.sidebar.checkbox("📡 Usar gráfico real de Binance (EUR/USDT
 if usar_binance:
     df = obtener_velas_binance(symbol="EURUSDT", interval="1m", limit=100)
     st.success("✅ Datos reales cargados desde Binance")
+    st.dataframe(df)
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
