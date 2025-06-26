@@ -83,8 +83,8 @@ if fig and resultado.get("entradas_idx"):
         y=df.loc[resultado["entradas_idx"], "close"],
         mode="markers",
         marker=dict(
-            size=6,  # más pequeño
-            color="rgba(30, 144, 255, 0.5)",  # azul translúcido (dodgerblue, 50%)
+            size=10,  # más pequeño
+            color="rgba(30, 144, 255, 0.8)",  # azul translúcido (dodgerblue, 50%)
             symbol="x"
         ),
         name="Entradas reales"
