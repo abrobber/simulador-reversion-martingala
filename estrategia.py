@@ -8,6 +8,8 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
     saldo_min = saldo
     entradas_idx = []  # ← nuevo: guardar posiciones reales de entrada
     entradas_filtradas_idx = []
+    entradas_filtradas_por_rsi = 0
+
 
 
     for i in range(2, len(df)):
