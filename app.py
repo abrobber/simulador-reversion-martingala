@@ -83,6 +83,7 @@ resultado = simular_sesion(
 
 # Añadir marcadores reales si hay entradas válidas
 if fig and resultado.get("entradas_idx"):
+    '''
     fig.add_trace(go.Scatter(
         x=resultado["entradas_idx"],
         y=df.loc[resultado["entradas_idx"], "close"],
@@ -119,7 +120,8 @@ if fig and resultado.get("entradas_idx"):
             name=f"Ciclo {ciclo}",
             hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
         ))
-
+    '''
+    
     for idx, pred in zip(resultado["entradas_idx"], resultado["predicciones"]):
         color = "red" if pred == "roja" else "green"
         simbolo = "triangle-down" if pred == "roja" else "triangle-up"
