@@ -96,6 +96,21 @@ resultado = simular_sesion(
     usar_rsi=filtro_rsi
 )
 
+# Graficar velas (como antes)
+fig = go.Figure(...)
+
+# Marcar entradas simuladas por la estrategia
+fig.add_trace(go.Scatter(
+    x=resultado['entradas_idx'],
+    y=df.loc[resultado['entradas_idx'], "close"],
+    mode="markers",
+    marker=dict(size=10, color="dodgerblue", symbol="x"),
+    name="Entradas reales"
+))
+
+st.plotly_chart(fig, use_container_width=True)
+
+
 # Mostrar resultados
 st.subheader("📊 Resultados")
 st.metric("Entradas totales", resultado['entradas'])
