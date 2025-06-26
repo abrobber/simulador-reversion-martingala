@@ -5,6 +5,7 @@ from utils import calcular_rsi
 from utils import obtener_velas_twelvedata
 import plotly.graph_objects as go
 
+fig = None
 st.set_page_config(page_title="Simulador Reversión Martingala", layout="wide")
 st.title("🔁 Simulador de Reversión con Martingala")
 
@@ -32,29 +33,6 @@ if usar_twelvedata:
         st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
     else:
         st.success("✅ Datos reales cargados desde Twelve Data")
-        if not df.empty:
-            st.subheader("📊 Gráfico de Velas (Candlestick)")
-        
-            # Estimar high y low si no se tienen (porque Twelve sólo da open/close)
-            df["high"] = df[["open", "close"]].max(axis=1) + 0.0003  # margen arriba
-            df["low"] = df[["open", "close"]].min(axis=1) - 0.0003   # margen abajo
-        
-            fig = go.Figure(data=[go.Candlestick(
-                x=df.index,
-                open=df["open"],
-                high=df["high"],
-                low=df["low"],
-                close=df["close"],
-                increasing_line_color='green',
-                decreasing_line_color='red',
-                showlegend=False
-            )])
-        
-            fig.update_layout(xaxis_rangeslider_visible=False, height=400)
-            #st.plotly_chart(fig, use_container_width=True)
-            
-            # Mostrar gráfico actualizado
-            #st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -64,7 +42,24 @@ else:
         df = pd.read_csv(archivo)
     else:
         df = pd.read_csv("data/velas_demo.csv")
+        
+# Crear gráfico de velas para cualquier df válido
+if not df.empty and {"open", "close"}.issubset(df.columns):
+    df["high"] = df[["open", "close"]].max(axis=1) + 0.0003
+    df["low"] = df[["open", "close"]].min(axis=1) - 0.0003
 
+    fig = go.Figure(data=[go.Candlestick(
+        x=df.index,
+        open=df["open"],
+        high=df["high"],
+        low=df["low"],
+        close=df["close"],
+        increasing_line_color="green",
+        decreasing_line_color="red",
+        showlegend=False
+    )])
+
+    fig.update_layout(xaxis_rangeslider_visible=False, height=400)
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
@@ -81,8 +76,8 @@ resultado = simular_sesion(
     usar_rsi=filtro_rsi
 )
 
-# Añadir marcadores reales de entradas simuladas
-if resultado["entradas_idx"]:
+# Añadir marcadores reales si hay entradas válidas
+if fig and resultado.get("entradas_idx"):
     fig.add_trace(go.Scatter(
         x=resultado["entradas_idx"],
         y=df.loc[resultado["entradas_idx"], "close"],
@@ -90,7 +85,11 @@ if resultado["entradas_idx"]:
         marker=dict(size=10, color="dodgerblue", symbol="x"),
         name="Entradas reales"
     ))
-st.plotly_chart(fig, use_container_width=True)
+
+if fig:
+    st.subheader("📊 Gráfico con Entradas Detectadas")
+    st.plotly_chart(fig, use_container_width=True)
+
 
 
 
