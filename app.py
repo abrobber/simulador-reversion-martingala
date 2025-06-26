@@ -65,19 +65,6 @@ if not df.empty and {"open", "close"}.issubset(df.columns):
 
     fig.update_layout(xaxis_rangeslider_visible=False, height=400)
 
-colores_por_ciclo = {1: "limegreen", 2: "gold", 3: "orangered", 4: "crimson", 5: "black", 6: "purple"}
-
-for idx, ciclo in zip(resultado["entradas_idx"], resultado["ciclos_por_entrada"]):
-    color = colores_por_ciclo.get(ciclo, "gray")
-    fig.add_trace(go.Scatter(
-        x=[idx],
-        y=[df.loc[idx, "close"] + 0.0005],
-        mode="markers",
-        marker=dict(size=8, color=color, symbol="circle"),
-        name=f"Ciclo {ciclo}",
-        hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
-    ))
-
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
@@ -124,6 +111,18 @@ if fig:
     st.subheader("📊 Gráfico con Entradas Detectadas")
     st.plotly_chart(fig, use_container_width=True)
 
+colores_por_ciclo = {1: "limegreen", 2: "gold", 3: "orangered", 4: "crimson", 5: "black", 6: "purple"}
+
+for idx, ciclo in zip(resultado["entradas_idx"], resultado["ciclos_por_entrada"]):
+    color = colores_por_ciclo.get(ciclo, "gray")
+    fig.add_trace(go.Scatter(
+        x=[idx],
+        y=[df.loc[idx, "close"] + 0.0005],
+        mode="markers",
+        marker=dict(size=8, color=color, symbol="circle"),
+        name=f"Ciclo {ciclo}",
+        hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
+    ))
 
 # Mostrar resultados
 st.subheader("📊 Resultados")
