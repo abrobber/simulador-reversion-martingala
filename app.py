@@ -125,15 +125,20 @@ if fig and resultado.get("entradas_idx"):
     for idx, pred in zip(resultado["entradas_idx"], resultado["predicciones"]):
         color = "red" if pred == "roja" else "green"
         simbolo = "triangle-down" if pred == "roja" else "triangle-up"
+        
+        # Distancia vertical: arriba para roja (baja), abajo para verde (alza)
+        desplazamiento = 0.0010 if pred == "roja" else -0.0010
+        y_valor = df.loc[idx, "close"] + desplazamiento
     
         fig.add_trace(go.Scatter(
             x=[idx],
-            y=[df.loc[idx, "high"] + 0.0003] if pred == "roja" else [df.loc[idx, "low"] - 0.0003],
+            y=[y_valor],
             mode="markers",
-            marker=dict(size=9, color=color, symbol=simbolo),
+            marker=dict(size=10, color=color, symbol=simbolo),
             name=f"Predicción {pred}",
             hovertemplate=f"Predicción: {pred}<br>Índice: {idx}<extra></extra>"
         ))
+
 
 
 if fig:
