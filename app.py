@@ -4,9 +4,12 @@ from estrategia import simular_sesion
 from utils import calcular_rsi
 from utils import obtener_velas_twelvedata
 import plotly.graph_objects as go
+from streamlit_autorefresh import st_autorefresh
 
 fig = None
 st.set_page_config(page_title="Simulador Reversión Martingala", layout="wide")
+# Refresca cada 30 segundos (30,000 ms)
+st_autorefresh(interval=30 * 1000, key="data_refresh")
 st.title("🔁 Simulador de Reversión con Martingala")
 
 # Parámetros
