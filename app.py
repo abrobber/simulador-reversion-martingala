@@ -24,8 +24,10 @@ st.subheader("📄 Cargar secuencia de velas")
 usar_twelvedata = st.sidebar.checkbox("📡 Usar gráfico real de Twelve Data (EUR/USD)")
 
 if usar_twelvedata:
-    @st.cache_data(ttl=60)
-    df = obtener_velas_twelvedata(limit=100)
+    if st.button("🔄 Actualizar datos"):
+        df = obtener_velas_twelvedata(limit=100)
+    else:
+        st.stop()  # Evita seguir si no se presiona
     if df.empty:
         st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
     else:
