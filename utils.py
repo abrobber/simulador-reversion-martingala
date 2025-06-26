@@ -19,21 +19,33 @@ def calcular_rsi(colores, periodo=6):
             rsi.append(100 - (100 / (1 + rs)))
     return rsi
 
+def obtener_velas_twelvedata(symbol="EUR/USD", interval="1min", apikey="7a8323602dee4ac382196181cc32a8a7", limit=100):
+    url = "https://api.twelvedata.com/time_series"
+    params = {
+        "symbol": symbol,
+        "interval": interval,
+        "outputsize": limit,
+        "apikey": apikey
+    }
 
-def obtener_velas_yf(ticker="BTC-USD", interval="5m", period="1d", limit=100):
-    df = yf.download(ticker, interval=interval, period=period, progress=False)
+    try:
+        r = requests.get(url, params=params, timeout=10)
+        r.raise_for_status()
+        data = r.json()
 
-    # Verifica si tiene datos y columnas necesarias
-    if df.empty or not set(["Open", "Close"]).issubset(df.columns):
-        return pd.DataFrame(columns=["Open", "Close", "color"])
+        if "values" not in data:
+            return pd.DataFrame(columns=["open", "close", "color"])
 
-    df = df.dropna(subset=["Open", "Close"])
-    if df.empty:
-        return pd.DataFrame(columns=["Open", "Close", "color"])
+        df = pd.DataFrame(data["values"])
+        df["open"] = df["open"].astype(float)
+        df["close"] = df["close"].astype(float)
+        df["color"] = df.apply(lambda row: "verde" if row["close"] > row["open"] else "roja", axis=1)
+        return df[["open", "close", "color"]].iloc[::-1].reset_index(drop=True)
 
-    df = df.tail(limit).copy()
-    df["color"] = df.apply(lambda row: "verde" if row["Close"] > row["Open"] else "roja", axis=1)
-    return df[["Open", "Close", "color"]].reset_index(drop=True)
+    except Exception as e:
+        print(f"Error al obtener datos de Twelve Data: {e}")
+        return pd.DataFrame(columns=["open", "close", "color"])
+
 
 
 
