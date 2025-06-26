@@ -3,6 +3,7 @@ import pandas as pd
 from estrategia import simular_sesion
 from utils import calcular_rsi
 from utils import obtener_velas_twelvedata
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="Simulador Reversión Martingala", layout="wide")
 st.title("🔁 Simulador de Reversión con Martingala")
@@ -29,8 +30,26 @@ if usar_twelvedata:
     else:
         st.success("✅ Datos reales cargados desde Twelve Data")
         if not df.empty:
-            st.subheader("📈 Gráfico de velas (open vs close)")
-            st.line_chart(df[["open", "close"]])
+            st.subheader("📊 Gráfico de Velas (Candlestick)")
+        
+            # Estimar high y low si no se tienen (porque Twelve sólo da open/close)
+            df["high"] = df[["open", "close"]].max(axis=1) + 0.0003  # margen arriba
+            df["low"] = df[["open", "close"]].min(axis=1) - 0.0003   # margen abajo
+        
+            fig = go.Figure(data=[go.Candlestick(
+                x=df.index,
+                open=df["open"],
+                high=df["high"],
+                low=df["low"],
+                close=df["close"],
+                increasing_line_color='green',
+                decreasing_line_color='red',
+                showlegend=False
+            )])
+        
+            fig.update_layout(xaxis_rangeslider_visible=False, height=400)
+            st.plotly_chart(fig, use_container_width=True)
+
 
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
