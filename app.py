@@ -120,6 +120,20 @@ if fig and resultado.get("entradas_idx"):
             hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
         ))
 
+    for idx, pred in zip(resultado["entradas_idx"], resultado["predicciones"]):
+        color = "red" if pred == "roja" else "green"
+        simbolo = "triangle-down" if pred == "roja" else "triangle-up"
+    
+        fig.add_trace(go.Scatter(
+            x=[idx],
+            y=[df.loc[idx, "close"] + 0.0005],
+            mode="markers",
+            marker=dict(size=9, color=color, symbol=simbolo),
+            name=f"Predicción {pred}",
+            hovertemplate=f"Predicción: {pred}<br>Índice: {idx}<extra></extra>"
+        ))
+
+
 if fig:
     st.subheader("📊 Gráfico con Entradas Detectadas")
     st.plotly_chart(fig, use_container_width=True)
