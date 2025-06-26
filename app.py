@@ -80,7 +80,7 @@ resultado = simular_sesion(
 if fig and resultado.get("entradas_idx"):
     fig.add_trace(go.Scatter(
         x=resultado["entradas_idx"],
-        y=df.loc[resultado["entradas_idx"], "close"],
+        y=df.loc[resultado["entradas_idx"], "close"] + 0.0005,
         mode="markers",
         marker=dict(size=10, color="dodgerblue", symbol="x"),
         name="Entradas reales"
