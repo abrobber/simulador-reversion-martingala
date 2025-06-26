@@ -28,17 +28,11 @@ st.subheader("📄 Cargar secuencia de velas")
 usar_twelvedata = st.sidebar.checkbox("📡 Usar gráfico real de Twelve Data (EUR/USD)")
 
 if usar_twelvedata:
-    if st.button("🔄 Actualizar datos"):
-        df = obtener_velas_twelvedata(limit=100)
-    else:
-        st.stop()  # Evita seguir si no se presiona
+    df = obtener_velas_twelvedata(limit=100)
     if df.empty:
         st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
     else:
         st.success("✅ Datos reales cargados desde Twelve Data")
-
-
-
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
