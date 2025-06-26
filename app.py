@@ -50,6 +50,25 @@ if usar_twelvedata:
             fig.update_layout(xaxis_rangeslider_visible=False, height=400)
             st.plotly_chart(fig, use_container_width=True)
 
+            # Detectar entradas según patrón de reversión simple
+            entradas_idx = []
+            for i in range(2, len(df)):
+                if df["color"][i-2] == df["color"][i-1] and df["color"][i] != df["color"][i-1]:
+                    entradas_idx.append(i)
+            
+            # Agregar marcadores en el gráfico donde hay entrada
+            fig.add_trace(go.Scatter(
+                x=entradas_idx,
+                y=df.loc[entradas_idx, "close"],
+                mode="markers",
+                marker=dict(size=10, color="dodgerblue", symbol="circle"),
+                name="Entrada detectada"
+            ))
+            
+            # Mostrar gráfico actualizado
+            st.plotly_chart(fig, use_container_width=True)
+
+
 
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
