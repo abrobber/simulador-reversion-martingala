@@ -18,42 +18,32 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
                 entradas_filtradas_por_rsi += 1
                 entradas_filtradas_idx.append(i)  # Guardamos el índice de esta oportunidad ignorada
                 continue
-
-
+    
             entradas += 1
-            entradas_idx.append(i)  # ← nuevo: guardar punto de entrada real
+            entradas_idx.append(i)  # Guardar punto de entrada real
             ciclo = 0
             apuesta = saldo * stake_pct
+            real = df['color'][i]
             prediccion = 'verde' if df['color'][i-1] == 'roja' else 'roja'
-            acierto = False
-            
-            while ciclo < ciclos_max and i + ciclo < len(df):
-                real = df['color'][i + ciclo]
-                acierto = prediccion == real
-            
+            acierto = prediccion == real
+    
+            while not acierto and ciclo < ciclos_max - 1:
                 saldo -= apuesta
-                if acierto:
-                    ganancia = apuesta * payout
-                    saldo += ganancia
-                    aciertos += 1
-                    break
-                else:
-                    apuesta *= martingala
-                    ciclo += 1
-            
-            if not acierto:
-                saldo += 0  # nada más que hacer: ya descontado
-                ganancia = -apuesta / martingala  # retroceder a última apuesta válida
-            
-            ciclos_totales.append(ciclo if acierto else ciclo + 1)
+                apuesta *= martingala
+                ciclo += 1
+                acierto = prediccion == real
+    
+            ganancia = apuesta * payout if acierto else -apuesta
+            saldo += ganancia
+            aciertos += 1 if acierto else 0
+            ciclos_totales.append(ciclo + 1)
             saldo_max = max(saldo_max, saldo)
             saldo_min = min(saldo_min, saldo)
             historial.append(saldo)
-
-
-
+    
             if saldo >= 100 * (1 + tp_pct) or saldo <= 100 * (1 - sl_pct):
                 break
+
 
     return {
         'entradas': entradas,
