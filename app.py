@@ -125,7 +125,7 @@ if fig and resultado.get("entradas_idx"):
     for idx, pred in zip(resultado["entradas_idx"], resultado["predicciones"]):
         color = "red" if pred == "roja" else "green"
         simbolo = "triangle-down" if pred == "roja" else "triangle-up"
-        distancia = 0.0005 if pred == "roja" else -0.0005
+        distancia = 0.0010 if pred == "roja" else -0.0010
     
         fig.add_trace(go.Scatter(
             x=[idx],
