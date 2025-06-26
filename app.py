@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from estrategia import simular_sesion
 from utils import calcular_rsi
-from utils import obtener_velas_yf
+from utils import obtener_velas_twelvedata
 
 st.set_page_config(page_title="Simulador Reversión Martingala", layout="wide")
 st.title("🔁 Simulador de Reversión con Martingala")
@@ -20,19 +20,21 @@ filtro_rsi = st.sidebar.checkbox("Usar filtro RSI 40–60", value=False)
 st.subheader("📄 Cargar secuencia de velas")
 
 # Checkbox para usar gráfico real
-usar_yf = st.sidebar.checkbox("📡 Usar gráfico real de Yahoo Finance (BTC-USD)")
+usar_twelvedata = st.sidebar.checkbox("📡 Usar gráfico real de Twelve Data (EUR/USD)")
 
-if usar_yf:
-    df = obtener_velas_yf(ticker="BTC-USD", interval="5m", period="1d", limit=100)
-    st.success("✅ Datos reales cargados desde Yahoo Finance")
+if usar_twelvedata:
+    df = obtener_velas_twelvedata(limit=100)
     if df.empty:
-        st.warning("⚠️ Yahoo Finance no devolvió suficientes datos. Probá en horario de mercado o con otro símbolo.")
+        st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
+    else:
+        st.success("✅ Datos reales cargados desde Twelve Data")
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
         df = pd.read_csv(archivo)
     else:
         df = pd.read_csv("data/velas_demo.csv")
+
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
