@@ -115,7 +115,7 @@ if fig and resultado.get("entradas_idx"):
             x=[idx],
             y=[df.loc[idx, "close"] + 0.0005],
             mode="markers",
-            marker=dict(size=8, color=color, symbol="circle"),
+            marker=dict(size=5, color=color, symbol="circle"),
             name=f"Ciclo {ciclo}",
             hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
         ))
