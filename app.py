@@ -63,7 +63,6 @@ if not df.empty and {"open", "close"}.issubset(df.columns):
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
-    st.metric("Filtradas por RSI", resultado['entradas_filtradas_rsi'])
 
 # Ejecutar simulación
 resultado = simular_sesion(
@@ -111,6 +110,9 @@ if fig:
 # Mostrar resultados
 st.subheader("📊 Resultados")
 st.metric("Entradas totales", resultado['entradas'])
+if filtro_rsi:
+    st.metric("Filtradas por RSI", resultado['entradas_filtradas_rsi'])
+
 st.metric("Acertadas", resultado['aciertos'])
 prom = resultado.get('prom_ciclos')
 st.metric("Ciclos promedio", f"{prom:.2f}" if prom is not None else "–")
