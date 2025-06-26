@@ -24,15 +24,22 @@ filtro_rsi = st.sidebar.checkbox("Usar filtro RSI 40–60", value=False)
 # Carga de velas
 st.subheader("📄 Cargar secuencia de velas")
 
-# Checkbox para usar gráfico real
-usar_twelvedata = st.sidebar.checkbox("📡 Usar gráfico real de Twelve Data (EUR/USD)")
 
+# Checkbox para usar gráfico real
+usar_twelvedata = st.sidebar.checkbox("📡 Usar gráfico real de Twelve Data")
+# Selector de símbolo de divisa
+moneda = st.sidebar.selectbox(
+    "💱 Par de divisas",
+    options=["EUR/USD", "USD/JPY", "GBP/USD", "AUD/USD", "USD/CHF"],
+    index=0
+)
 if usar_twelvedata:
-    df = obtener_velas_twelvedata(limit=100)
+    df = obtener_velas_twelvedata(symbol=moneda, limit=100)
     if df.empty:
         st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
     else:
         st.success("✅ Datos reales cargados desde Twelve Data")
+        st.info(f"🔎 Analizando **{moneda}** ")
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
