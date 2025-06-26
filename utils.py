@@ -19,7 +19,7 @@ def calcular_rsi(colores, periodo=6):
             rsi.append(100 - (100 / (1 + rs)))
     return rsi
 
-def obtener_velas_twelvedata(symbol="EUR/USD", interval="1min", apikey="7a8323602dee4ac382196181cc32a8a7", limit=100):
+def obtener_velas_twelvedata(symbol="USD/JPY", interval="1min", apikey="7a8323602dee4ac382196181cc32a8a7", limit=100):
     url = "https://api.twelvedata.com/time_series"
     params = {
         "symbol": symbol,
