@@ -28,6 +28,10 @@ if usar_twelvedata:
         st.warning("⚠️ No se pudieron obtener datos desde Twelve Data.")
     else:
         st.success("✅ Datos reales cargados desde Twelve Data")
+        if not df.empty:
+            st.subheader("📈 Gráfico de velas (open vs close)")
+            st.line_chart(df[["open", "close"]])
+
 else:
     archivo = st.file_uploader("📄 Sube un .csv con columna 'color' (roja/verde)", type="csv")
     if archivo:
