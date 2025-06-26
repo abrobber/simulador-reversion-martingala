@@ -9,6 +9,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
     entradas_idx = []  # ← nuevo: guardar posiciones reales de entrada
     entradas_filtradas_idx = []
     entradas_filtradas_por_rsi = 0
+    predicciones = []
 
 
 
@@ -23,6 +24,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
             entradas_idx.append(i)
     
             prediccion = 'verde' if df['color'][i-1] == 'roja' else 'roja'
+            predicciones.append(prediccion)
             ciclo = 0
             apuesta = saldo * stake_pct
             acierto = False
@@ -71,5 +73,6 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
         'entradas_idx': entradas_idx,  # ← nuevo: devuelve los índices
         'entradas_filtradas_idx': entradas_filtradas_idx,
         'entradas_filtradas_rsi': entradas_filtradas_por_rsi,
-        'ciclos_por_entrada': ciclos_totales
+        'ciclos_por_entrada': ciclos_totales,
+        'predicciones': predicciones
     }
