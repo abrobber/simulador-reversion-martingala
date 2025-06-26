@@ -38,8 +38,9 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
                     aciertos += 1
                     break
                 else:
-                    apuesta *= martingala
-                    ciclo += 1
+                    saldo += 0 
+                    ganancia = -apuesta
+
             
             if not acierto:
                 saldo += 0  # nada más que hacer: ya descontado
