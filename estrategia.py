@@ -6,7 +6,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
     ciclos_totales = []
     saldo_max = saldo
     saldo_min = saldo
-    entradas_idx = []
+    entradas_idx = []  # ← nuevo: guardar posiciones reales de entrada
 
     for i in range(2, len(df)):
         if df['color'][i-2] == df['color'][i-1] and df['color'][i] != df['color'][i-1]:
@@ -14,7 +14,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
                 continue
 
             entradas += 1
-            entradas_idx.append(i)  # o el timestamp, si preferís
+            entradas_idx.append(i)  # ← nuevo: guardar punto de entrada real
             ciclo = 0
             apuesta = saldo * stake_pct
             real = df['color'][i]
@@ -45,5 +45,5 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
         'saldo_final': saldo,
         'drawdown_max': (saldo_max - saldo_min)/saldo_max * 100,
         'historial': historial,
-        'entradas_idx': entradas_idx  # nueva lista con índices exactos de entrada
+        'entradas_idx': entradas_idx  # ← nuevo: devuelve los índices
     }
