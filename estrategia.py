@@ -70,5 +70,6 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
         'historial': historial,
         'entradas_idx': entradas_idx,  # ← nuevo: devuelve los índices
         'entradas_filtradas_idx': entradas_filtradas_idx,
-        'entradas_filtradas_rsi': entradas_filtradas_por_rsi
+        'entradas_filtradas_rsi': entradas_filtradas_por_rsi,
+        'ciclos_por_entrada': ciclos_totales
     }
