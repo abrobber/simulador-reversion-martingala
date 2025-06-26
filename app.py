@@ -90,11 +90,21 @@ if fig and resultado.get("entradas_idx"):
         name="Entradas reales"
     ))
 
+    fig.add_trace(go.Scatter(
+        x=resultado["entradas_filtradas_idx"],
+        y=df.loc[resultado["entradas_filtradas_idx"], "close"],
+        mode="markers",
+        marker=dict(
+            size=10,
+            color="rgba(255, 140, 0, 0.8)",  # naranja con transparencia
+            symbol="triangle-down"
+        ),
+        name="Filtradas por RSI"
+    ))
+
 if fig:
     st.subheader("📊 Gráfico con Entradas Detectadas")
     st.plotly_chart(fig, use_container_width=True)
-
-
 
 
 # Mostrar resultados
