@@ -38,9 +38,8 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
                     aciertos += 1
                     break
                 else:
-                    saldo += 0 
-                    ganancia = -apuesta
-
+                    apuesta *= martingala
+                    ciclo += 1
             
             if not acierto:
                 saldo += 0  # nada más que hacer: ya descontado
@@ -50,6 +49,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
             saldo_max = max(saldo_max, saldo)
             saldo_min = min(saldo_min, saldo)
             historial.append(saldo)
+
 
 
             if saldo >= 100 * (1 + tp_pct) or saldo <= 100 * (1 - sl_pct):
