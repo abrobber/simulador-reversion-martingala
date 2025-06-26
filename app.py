@@ -63,6 +63,7 @@ if not df.empty and {"open", "close"}.issubset(df.columns):
 
 if filtro_rsi:
     df['RSI'] = calcular_rsi(df['color'], periodo=6)
+    st.metric("Filtradas por RSI", resultado['entradas_filtradas_rsi'])
 
 # Ejecutar simulación
 resultado = simular_sesion(
@@ -115,7 +116,4 @@ prom = resultado.get('prom_ciclos')
 st.metric("Ciclos promedio", f"{prom:.2f}" if prom is not None else "–")
 st.metric("Saldo final", f"${resultado['saldo_final']:.2f}")
 st.metric("Drawdown máximo", f"{resultado['drawdown_max']:.2f}%")
-if filtro_rsi:
-    st.metric("Filtradas por RSI", resultado['entradas_filtradas_rsi'])
-
 st.line_chart(resultado['historial'])
