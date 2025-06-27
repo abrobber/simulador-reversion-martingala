@@ -10,6 +10,7 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
     entradas_filtradas_idx = []
     entradas_filtradas_por_rsi = 0
     predicciones = []
+    aciertos_por_entrada = []
 
 
 
@@ -42,11 +43,14 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
                     ganancia = apuesta * payout
                     saldo += apuesta + ganancia  # reintegra + ganancia
                     aciertos += 1
+                    aciertos_por_entrada.append(True)
                     break
                 else:
                     apuesta *= martingala
                     ciclo += 1
-    
+                    aciertos_por_entrada.append(False)
+
+
             if not acierto:
                 ganancia = 0  # ya se descontó todo
     
@@ -71,5 +75,6 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
         'entradas_filtradas_idx': entradas_filtradas_idx,
         'entradas_filtradas_rsi': entradas_filtradas_por_rsi,
         'ciclos_por_entrada': ciclos_totales,
-        'predicciones': predicciones
+        'predicciones': predicciones,
+        'aciertos_por_entrada': aciertos_por_entrada
     }
