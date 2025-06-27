@@ -123,8 +123,7 @@ if fig and resultado.get("entradas_idx"):
             marker=dict(
                 size=10,
                 color=color_pred,
-                symbol=simbolo,
-                line=dict(color=borde_color, width=2) if borde_color else None
+                symbol=simbolo
             ),
             name=f"{'✔️' if acerto else '❌'} {pred.capitalize()}",
             hovertemplate=f"Predicción: {pred}<br>Resultado: {'✅' if acerto else '❌'}<br>Ciclo: {ciclo}<br>Índice: {idx}<extra></extra>"
