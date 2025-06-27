@@ -52,6 +52,8 @@ def simular_sesion(df, payout, stake_pct, martingala, ciclos_max, tp_pct, sl_pct
 
             if not acierto:
                 ganancia = 0  # ya se descontó todo
+
+            if ciclo >= ciclos_max and not acierto:    
                 aciertos_por_entrada.append(False)
 
     
