@@ -99,10 +99,6 @@ if fig and resultado.get("entradas_idx"):
         color = "green" if pred == "verde" else "red"
         simbolo = "triangle-up" if pred == "verde" else "triangle-down"
     
-        if not acierto:
-            simbolo = "x"
-            color = "gray"
-    
         desplazamiento = 0.0010 if pred == "roja" else -0.0010
         y_valor = df.loc[idx, "close"] + desplazamiento
     
