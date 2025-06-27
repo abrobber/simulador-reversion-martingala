@@ -103,7 +103,7 @@ if fig and resultado.get("entradas_idx"):
         
         # Saber si la predicción fue acertada: ciclo dentro del máximo permitido
         # acerto = ciclo <= ciclos_max
-        acerto = prediccion == real  # ← en cada ciclo
+        acerto = pred == real  # ← en cada ciclo
 
         
         if acerto:
