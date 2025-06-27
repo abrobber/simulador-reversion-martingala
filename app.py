@@ -95,7 +95,7 @@ if fig and resultado.get("entradas_idx"):
         name="Filtradas por RSI"
     ))
     
-    for idx, pred, acierto in zip(resultado["entradas_idx"], resultado["predicciones"], resultado["aciertos_por_entrada"]):
+    for idx, pred, acierto, ciclo in zip(resultado["entradas_idx"], resultado["predicciones"], resultado["aciertos_por_entrada"], resultado["ciclos_por_entrada"]):
         color = "green" if pred == "verde" else "red"
         simbolo = "triangle-up" if pred == "verde" else "triangle-down"
     
