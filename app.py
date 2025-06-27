@@ -95,15 +95,12 @@ if fig and resultado.get("entradas_idx"):
         name="Filtradas por RSI"
     ))
     
-    
-    for idx, pred, ciclo in zip(resultado["entradas_idx"], resultado["predicciones"], resultado["ciclos_por_entrada"]):
+    for ciclo, idx, pred in zip(resultado["ciclos_por_entrada"], resultado["entradas_idx"], resultado["predicciones"]):
+        acerto = ciclo <= ciclos_max and ciclo > 0
+
         # Determinar color según predicción
         color_pred = "red" if pred == "roja" else "green"
-        #simbolo = "triangle-down" if pred == "roja" else "triangle-up"
-        
-        # Saber si la predicción fue acertada: ciclo dentro del máximo permitido
-        # acerto = ciclo <= ciclos_max
-        acerto = resultado["ciclos_por_entrada"][j] <= ciclos_max and resultado["ciclos_por_entrada"][j] > 0
+
 
         
         if acerto:
