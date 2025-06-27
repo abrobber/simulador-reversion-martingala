@@ -108,7 +108,7 @@ if fig and resultado.get("entradas_idx"):
             mode="markers",
             marker=dict(size=10, color=color, symbol=simbolo),
             name=f"{'✔️' if acierto else '❌'} {pred.capitalize()}",
-            hovertemplate=f"Predicción: {pred}<br>Resultado: {'✅' if acierto else '❌'}<br>Índice: {idx}<extra></extra>"
+            hovertemplate=f"Predicción: {pred}<br>Resultado: {'✅' if acierto else '❌'}<br>Ciclo: {ciclo}<br>Índice: {idx}<extra></extra>"
         ))
 
 
