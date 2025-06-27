@@ -102,7 +102,9 @@ if fig and resultado.get("entradas_idx"):
         #simbolo = "triangle-down" if pred == "roja" else "triangle-up"
         
         # Saber si la predicción fue acertada: ciclo dentro del máximo permitido
-        acerto = ciclo <= ciclos_max
+        # acerto = ciclo <= ciclos_max
+        acerto = prediccion == real  # ← en cada ciclo
+
         
         if acerto:
             simbolo = "triangle-up" if pred == "verde" else "triangle-down"
