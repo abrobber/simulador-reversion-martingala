@@ -95,23 +95,14 @@ if fig and resultado.get("entradas_idx"):
         name="Filtradas por RSI"
     ))
     
-    for ciclo, idx, pred in zip(resultado["ciclos_por_entrada"], resultado["entradas_idx"], resultado["predicciones"]):
-        acerto = ciclo <= ciclos_max and ciclo > 0
-
-        # Determinar color según predicción
-        color_pred = "red" if pred == "roja" else "green"
-
-
-        
-        if acerto:
-            simbolo = "triangle-up" if pred == "verde" else "triangle-down"
-            color = "green" if pred == "verde" else "red"
-        else:
+    for idx, pred, acierto in zip(resultado["entradas_idx"], resultado["predicciones"], resultado["aciertos_por_entrada"]):
+        color = "green" if pred == "verde" else "red"
+        simbolo = "triangle-up" if pred == "verde" else "triangle-down"
+    
+        if not acierto:
             simbolo = "x"
             color = "gray"
-
     
-        # Desplazamiento visual según dirección
         desplazamiento = 0.0010 if pred == "roja" else -0.0010
         y_valor = df.loc[idx, "close"] + desplazamiento
     
@@ -119,14 +110,11 @@ if fig and resultado.get("entradas_idx"):
             x=[idx],
             y=[y_valor],
             mode="markers",
-            marker=dict(
-                size=10,
-                color=color_pred,
-                symbol=simbolo
-            ),
-            name=f"{'✔️' if acerto else '❌'} {pred.capitalize()}",
-            hovertemplate=f"Predicción: {pred}<br>Resultado: {'✅' if acerto else '❌'}<br>Ciclo: {ciclo}<br>Índice: {idx}<extra></extra>"
+            marker=dict(size=10, color=color, symbol=simbolo),
+            name=f"{'✔️' if acierto else '❌'} {pred.capitalize()}",
+            hovertemplate=f"Predicción: {pred}<br>Resultado: {'✅' if acierto else '❌'}<br>Índice: {idx}<extra></extra>"
         ))
+
 
 
 
