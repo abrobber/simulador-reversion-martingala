@@ -83,19 +83,6 @@ resultado = simular_sesion(
 
 # Añadir marcadores reales si hay entradas válidas
 if fig and resultado.get("entradas_idx"):
-    '''
-    fig.add_trace(go.Scatter(
-        x=resultado["entradas_idx"],
-        y=df.loc[resultado["entradas_idx"], "close"],
-        mode="markers",
-        marker=dict(
-            size=10,  # más pequeño
-            color="rgba(30, 144, 255, 0.8)",  # azul translúcido (dodgerblue, 50%)
-            symbol="x"
-        ),
-        name="Entradas reales"
-    ))
-
     fig.add_trace(go.Scatter(
         x=resultado["entradas_filtradas_idx"],
         y=df.loc[resultado["entradas_filtradas_idx"], "close"],
@@ -107,29 +94,23 @@ if fig and resultado.get("entradas_idx"):
         ),
         name="Filtradas por RSI"
     ))
-
-    colores_por_ciclo = {1: "limegreen", 2: "gold", 3: "orangered", 4: "crimson", 5: "black", 6: "purple"}
     
-    for idx, ciclo in zip(resultado["entradas_idx"], resultado["ciclos_por_entrada"]):
-        color = colores_por_ciclo.get(ciclo, "gray")
-        fig.add_trace(go.Scatter(
-            x=[idx],
-            y=[df.loc[idx, "close"] + 0.0005],
-            mode="markers",
-            marker=dict(size=5, color=color, symbol="circle"),
-            name=f"Ciclo {ciclo}",
-            hovertemplate=f"Ciclo {ciclo}<br>Índice: {idx}<extra></extra>"
-        ))
-    '''
     
     for idx, pred, ciclo in zip(resultado["entradas_idx"], resultado["predicciones"], resultado["ciclos_por_entrada"]):
         # Determinar color según predicción
         color_pred = "red" if pred == "roja" else "green"
-        simbolo = "triangle-down" if pred == "roja" else "triangle-up"
+        #simbolo = "triangle-down" if pred == "roja" else "triangle-up"
         
         # Saber si la predicción fue acertada: ciclo dentro del máximo permitido
         acerto = ciclo <= ciclos_max
-        borde_color = "black" if not acerto else None  # borde negro si fue fallo
+        
+        if acerto:
+            simbolo = "triangle-up" if pred == "verde" else "triangle-down"
+            color = "green" if pred == "verde" else "red"
+        else:
+            simbolo = "x"
+            color = "gray"
+
     
         # Desplazamiento visual según dirección
         desplazamiento = 0.0010 if pred == "roja" else -0.0010
